@@ -1,7 +1,7 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-define('ANO_VERSION', '1.4.5');
+define('ANO_VERSION', '1.4.15');
 
 /**
  * ANO Theme diagnostics / logging.
@@ -187,6 +187,66 @@ function ano_meta_boxes() {
 }
 add_action('add_meta_boxes','ano_meta_boxes');
 
+/**
+ * Thumbnail kartu (tampil di halaman utama) terpisah dari gambar asli
+ * (featured image, tampil di halaman detail).
+ */
+function ano_thumb_post_types() {
+    return array('post','ano_book','ano_business','ano_initiative');
+}
+function ano_thumb_url($post,$size='medium_large') {
+    $post = get_post($post);
+    if (!$post) return '';
+    $tid = (int) get_post_meta($post->ID,'ano_thumbnail_id',true);
+    if ($tid) {
+        $url = wp_get_attachment_image_url($tid,$size);
+        if ($url) return $url;
+    }
+    $url = get_the_post_thumbnail_url($post,$size);
+    return $url ? $url : '';
+}
+function ano_media_field($name,$id,$select_label='Pilih Gambar',$remove_label='Hapus Gambar') {
+    $id = (int) $id;
+    $url = $id ? wp_get_attachment_image_url($id,'thumbnail') : '';
+    ?>
+    <div class="ano-media-field">
+        <input type="hidden" name="<?php echo esc_attr($name); ?>" value="<?php echo $id ? esc_attr($id) : ''; ?>">
+        <div class="ano-media-preview" style="margin-bottom:8px;"><?php if ($url) : ?><img src="<?php echo esc_url($url); ?>" style="max-width:140px;height:auto;display:block;" alt=""><?php endif; ?></div>
+        <button type="button" class="button ano-media-select"><?php echo esc_html($select_label); ?></button>
+        <button type="button" class="button ano-media-remove" <?php echo $id ? '' : 'style="display:none"'; ?>><?php echo esc_html($remove_label); ?></button>
+    </div>
+    <?php
+}
+function ano_thumb_meta_box() {
+    foreach (ano_thumb_post_types() as $pt) {
+        add_meta_box('ano_thumb_meta','Thumbnail Kartu','ano_thumb_meta_cb',$pt,'side','default');
+    }
+}
+add_action('add_meta_boxes','ano_thumb_meta_box');
+function ano_thumb_meta_cb($post) {
+    wp_nonce_field('ano_thumb','ano_thumb_nonce');
+    ano_media_field('ano_thumbnail_id',get_post_meta($post->ID,'ano_thumbnail_id',true),'Pilih Thumbnail','Hapus Thumbnail');
+    echo '<p class="description">Tampil di halaman utama dan daftar. Jika kosong, dipakai gambar unggulan (gambar asli). Gambar asli tampil di halaman detail.</p>';
+}
+function ano_save_thumb_meta($post_id) {
+    if (!isset($_POST['ano_thumb_nonce']) || !wp_verify_nonce($_POST['ano_thumb_nonce'],'ano_thumb')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (wp_is_post_revision($post_id)) return;
+    if (!current_user_can('edit_post',$post_id)) return;
+    $tid = isset($_POST['ano_thumbnail_id']) ? absint($_POST['ano_thumbnail_id']) : 0;
+    if ($tid && get_post_type($tid) === 'attachment') update_post_meta($post_id,'ano_thumbnail_id',$tid);
+    else delete_post_meta($post_id,'ano_thumbnail_id');
+}
+add_action('save_post','ano_save_thumb_meta');
+function ano_thumb_admin_assets($hook) {
+    if (!in_array($hook,array('post.php','post-new.php'),true)) return;
+    $screen = get_current_screen();
+    if (!$screen || !in_array($screen->post_type,ano_thumb_post_types(),true)) return;
+    wp_enqueue_media();
+    add_action('admin_footer','ano_content_media_script');
+}
+add_action('admin_enqueue_scripts','ano_thumb_admin_assets');
+
 function ano_field($label,$key,$value='',$type='text') {
     printf('<p><label><strong>%s</strong><br><input type="%s" name="%s" value="%s" style="width:100%%"></label></p>',
         esc_html($label),esc_attr($type),esc_attr($key),esc_attr($value));
@@ -264,7 +324,7 @@ function ano_content_dashboard_page() {
             <?php endforeach; ?>
         </div>
         <div style="margin-top:28px;background:#f6f7f7;padding:18px;max-width:1100px;">
-            <strong>Tips:</strong> gunakan <em>Gambar</em> untuk cover buku, logo usaha, dan gambar Inisiatif. Field <em>Urutan</em> menentukan posisi item di halaman depan.
+            <strong>Tips:</strong> <em>Gambar Asli</em> tampil penuh di halaman detail, sedangkan <em>Thumbnail</em> tampil di halaman utama (jika kosong, dipakai Gambar Asli). Field <em>Urutan</em> menentukan posisi item di halaman depan.
         </div>
     </div>
     <?php
@@ -290,6 +350,7 @@ function ano_content_admin_page($type_key) {
         $subtitle = isset($_POST['subtitle']) ? sanitize_text_field(wp_unslash($_POST['subtitle'])) : '';
         $author = isset($_POST['author']) ? sanitize_text_field(wp_unslash($_POST['author'])) : '';
         $image_id = isset($_POST['image_id']) ? absint($_POST['image_id']) : 0;
+        $thumbnail_id = isset($_POST['thumbnail_id']) ? absint($_POST['thumbnail_id']) : 0;
 
         if ($action === 'delete' && $post_id) {
             if (get_post_type($post_id) === $post_type && current_user_can('delete_post', $post_id)) {
@@ -325,7 +386,9 @@ function ano_content_admin_page($type_key) {
                     } else {
                         update_post_meta($saved_id, 'ano_' . $type_key . '_url', $url);
                     }
-                    if ($image_id) set_post_thumbnail($saved_id, $image_id);
+                    if ($image_id) set_post_thumbnail($saved_id, $image_id); else delete_post_thumbnail($saved_id);
+                    if ($thumbnail_id && get_post_type($thumbnail_id) === 'attachment') update_post_meta($saved_id, 'ano_thumbnail_id', $thumbnail_id);
+                    else delete_post_meta($saved_id, 'ano_thumbnail_id');
                     ano_log('ANO content saved.', array('type' => $type_key, 'post_id' => $saved_id, 'action' => $action));
                     $message = 'Konten berhasil disimpan.';
                     $editing_id = $saved_id;
@@ -342,6 +405,7 @@ function ano_content_admin_page($type_key) {
     };
     $image_id = $editing ? get_post_thumbnail_id($editing->ID) : 0;
     $image_url = $image_id ? wp_get_attachment_image_url($image_id, 'thumbnail') : '';
+    $thumbnail_id = $editing ? (int) get_post_meta($editing->ID, 'ano_thumbnail_id', true) : 0;
     $items = get_posts(array('post_type' => $post_type, 'post_status' => array('publish','draft','pending'), 'posts_per_page' => 100, 'orderby' => array('menu_order' => 'ASC', 'date' => 'DESC')));
     ?>
     <div class="wrap ano-content-admin">
@@ -364,11 +428,13 @@ function ano_content_admin_page($type_key) {
                         <?php else : ?>
                             <tr><th><label>URL</label></th><td><input class="regular-text" type="url" name="url" value="<?php echo esc_attr($field('ano_' . $type_key . '_url')); ?>"><p class="description">Jika kosong, link akan menuju halaman detail konten.</p></td></tr>
                         <?php endif; ?>
-                        <tr><th>Gambar</th><td>
-                            <input type="hidden" id="ano-image-id" name="image_id" value="<?php echo esc_attr($image_id); ?>">
-                            <div id="ano-image-preview" style="margin-bottom:8px;"> <?php if ($image_url) : ?><img src="<?php echo esc_url($image_url); ?>" style="max-width:140px;height:auto;display:block;"><?php endif; ?></div>
-                            <button type="button" class="button" id="ano-select-image">Pilih Gambar</button>
-                            <button type="button" class="button" id="ano-remove-image" <?php echo $image_id ? '' : 'style="display:none"'; ?>>Hapus Gambar</button>
+                        <tr><th>Gambar Asli</th><td>
+                            <?php ano_media_field('image_id', $image_id, 'Pilih Gambar', 'Hapus Gambar'); ?>
+                            <p class="description">Tampil penuh di halaman detail.</p>
+                        </td></tr>
+                        <tr><th>Thumbnail</th><td>
+                            <?php ano_media_field('thumbnail_id', $thumbnail_id, 'Pilih Thumbnail', 'Hapus Thumbnail'); ?>
+                            <p class="description">Tampil di halaman utama. Jika kosong, dipakai Gambar Asli.</p>
                         </td></tr>
                     </table>
                     <p><button class="button button-primary" type="submit">Simpan <?php echo esc_html($type['label']); ?></button>
@@ -408,19 +474,36 @@ function ano_content_admin_page($type_key) {
 }
 
 function ano_content_media_script() {
-    if (!isset($_GET['page']) || !in_array(sanitize_key(wp_unslash($_GET['page'])), array('ano-books','ano-business','ano-initiative'), true)) return;
+    static $printed = false;
+    if ($printed) return;
+    $printed = true;
     ?>
     <script>
     jQuery(function($){
-        let frame;
-        $('#ano-select-image').on('click', function(e){
+        $(document).on('click','.ano-media-select',function(e){
             e.preventDefault();
-            if(frame){frame.open();return;}
-            frame=wp.media({title:'Pilih gambar',button:{text:'Gunakan gambar'},multiple:false});
-            frame.on('select',function(){const a=frame.state().get('selection').first().toJSON();$('#ano-image-id').val(a.id);$('#ano-image-preview').html('<img src="'+a.url.replace(/"/g,'&quot;')+'" style="max-width:140px;height:auto;display:block;">');$('#ano-remove-image').show();});
+            const $f=$(this).closest('.ano-media-field');
+            let frame=$f.data('frame');
+            if(!frame){
+                frame=wp.media({title:'Pilih gambar',button:{text:'Gunakan gambar'},multiple:false});
+                frame.on('select',function(){
+                    const a=frame.state().get('selection').first().toJSON();
+                    const src=(a.sizes&&a.sizes.thumbnail)?a.sizes.thumbnail.url:a.url;
+                    $f.find('input[type=hidden]').val(a.id);
+                    $f.find('.ano-media-preview').empty().append($('<img>').attr('src',src).css({maxWidth:'140px',height:'auto',display:'block'}));
+                    $f.find('.ano-media-remove').show();
+                });
+                $f.data('frame',frame);
+            }
             frame.open();
         });
-        $('#ano-remove-image').on('click',function(e){e.preventDefault();$('#ano-image-id').val('');$('#ano-image-preview').empty();$(this).hide();});
+        $(document).on('click','.ano-media-remove',function(e){
+            e.preventDefault();
+            const $f=$(this).closest('.ano-media-field');
+            $f.find('input[type=hidden]').val('');
+            $f.find('.ano-media-preview').empty();
+            $(this).hide();
+        });
     });
     </script>
     <?php
@@ -435,3 +518,59 @@ function ano_excerpt($text,$length=115) {
     return wp_html_excerpt($text,$length,'…');
 }
 
+
+
+/**
+ * Halaman "Semua Artikel" (/artikel/) — daftar semua post.
+ * Jika Pengaturan → Membaca → "Halaman pos" sudah diatur, halaman itu yang dipakai.
+ */
+function ano_posts_archive_url() {
+    $page_id = (int) get_option('page_for_posts');
+    if ($page_id) {
+        $link = get_permalink($page_id);
+        if ($link) return $link;
+    }
+    if (get_option('permalink_structure')) return home_url('/artikel/');
+    return add_query_arg('ano_posts', '1', home_url('/'));
+}
+function ano_posts_rewrite() {
+    add_rewrite_rule('^artikel/page/([0-9]{1,})/?$', 'index.php?ano_posts=1&paged=$matches[1]', 'top');
+    add_rewrite_rule('^artikel/?$', 'index.php?ano_posts=1', 'top');
+}
+add_action('init', 'ano_posts_rewrite');
+add_filter('query_vars', function ($vars) { $vars[] = 'ano_posts'; return $vars; });
+add_action('init', function () {
+    if (get_option('ano_rewrite_version') !== ANO_VERSION) {
+        flush_rewrite_rules(false);
+        update_option('ano_rewrite_version', ANO_VERSION);
+    }
+}, 99);
+add_action('pre_get_posts', function ($q) {
+    if (is_admin() || !$q->is_main_query() || !$q->get('ano_posts')) return;
+    $q->set('post_type', 'post');
+    $q->set('post_status', 'publish');
+    $q->set('ignore_sticky_posts', true);
+    $q->set('page_id', '');
+    $q->set('p', '');
+    $q->is_page = false;
+    $q->is_singular = false;
+    $q->is_home = false;
+    $q->is_404 = false;
+    $q->is_archive = true;
+});
+add_filter('template_include', function ($template) {
+    if (get_query_var('ano_posts')) {
+        $archive = locate_template('archive.php');
+        if ($archive) return $archive;
+    }
+    return $template;
+});
+add_filter('get_the_archive_title', function ($title) {
+    return get_query_var('ano_posts') ? 'Semua Artikel' : $title;
+});
+add_filter('get_the_archive_description', function ($desc) {
+    return get_query_var('ano_posts') ? 'Tulisan, gagasan, dan catatan terbaru.' : $desc;
+});
+add_filter('pre_get_document_title', function ($title) {
+    return get_query_var('ano_posts') ? 'Semua Artikel — ' . get_bloginfo('name') : $title;
+});

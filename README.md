@@ -1,3 +1,29 @@
+### 1.4.15 — 2026-09-30
+- Border card di halaman "Lihat Semua" (Artikel, Buku, Usaha, Inisiatif) dihilangkan.
+
+### 1.4.14 — 2026-09-30
+- "Lihat Semua Artikel" kini mengarah ke halaman daftar semua post (/artikel/), lengkap dengan pagination.
+
+### 1.4.13 — 2026-09-30
+- Border pada `.article-card` dan `.content-card` dihilangkan.
+
+### 1.4.12 — 2026-09-30
+- Background semua halaman (body, header, menu mobile) diubah menjadi putih.
+
+### 1.4.11 — 2026-09-30
+- Tambah input Thumbnail (terpisah dari Gambar Asli) untuk Artikel, Buku, Usaha, dan Inisiatif.
+- Thumbnail tampil di halaman utama dan daftar arsip; halaman detail menampilkan gambar asli ukuran penuh.
+- Jika thumbnail kosong, dipakai gambar unggulan/Gambar Asli.
+- Tombol "Hapus Gambar" di Konten ANO kini benar-benar menghapus gambar saat disimpan.
+
+### 1.4.10 — 2026-09-30
+- Judul card: pindah baris di spasi, kata panjang tanpa spasi dipotong dengan "...".
+
+### 1.4.9 — 2026-09-30
+- Judul card (Artikel, Buku, Usaha, Inisiatif) boleh lebih dari satu baris (pindah baris di spasi); kata tunggal yang melebihi lebar kotak dipotong dengan "...".
+- Halaman detail Buku, Usaha, dan Inisiatif kini menampilkan deskripsi, subjudul/penulis (Buku), dan tombol website (Usaha/Inisiatif).
+- Pembaruan `front-page.php`, `footer.php`, dan `screenshot.png`.
+
 ### 1.4.4 — 2026-09-30
 - Penyempurnaan tampilan responsif bagian Inisiatif pada mobile.
 
@@ -60,7 +86,9 @@ Homepage menampilkan maksimal 3 artikel terbaru (`post`) secara otomatis, diurut
 
 ## Versioning
 
-- 1.4.5 — 2026-09-30: Mobile header: burger menu ditempatkan di sebelah kiri judul ANO.
+- **1.4.8** — 2026-09-30: Menyeragamkan grid konten homepage menjadi 4 kolom (25% per item) untuk Artikel, Diskografi Buku, Usaha, dan Inisiatif; Artikel dan Usaha menampilkan maksimal 4 item di homepage.
+
+- 1.4.6 — 2026-09-30: Mobile header: burger menu ditempatkan di sebelah kiri judul ANO.
 
 - **1.4.3** — 2026-09-30: tautan **Lihat Detail** pada bagian Inisiatif dibuka di tab baru dengan `target="_blank"` dan `rel="noopener noreferrer"`.
 
