@@ -37,7 +37,6 @@ $hero_fallback = get_template_directory_uri() . '/assets/images/hero.jpg';
                             </div>
                             <a class="btn" href="<?php echo esc_url(get_permalink($hero_post)); ?>">Baca Selengkapnya →</a>
                         </div>
-                        <div class="hero-quote">“Alam selalu punya cerita,<br>hanya mereka yang mau<br>mendengarkan.”<br><br>— Ano</div>
                     </div>
                 </article>
             <?php endforeach; ?>
@@ -51,7 +50,6 @@ $hero_fallback = get_template_directory_uri() . '/assets/images/hero.jpg';
                         <p class="hero-excerpt">Buat minimal satu artikel WordPress. Hero slider akan otomatis menampilkan tiga artikel terbaru berdasarkan tanggal publikasi.</p>
                         <a class="btn" href="<?php echo esc_url(admin_url('post-new.php')); ?>">Tulis Artikel →</a>
                     </div>
-                    <div class="hero-quote">“Alam selalu punya cerita,<br>hanya mereka yang mau<br>mendengarkan.”<br><br>— Ano</div>
                 </div>
             </article>
         <?php endif; ?>
@@ -66,34 +64,74 @@ $hero_fallback = get_template_directory_uri() . '/assets/images/hero.jpg';
     <?php endif; ?>
 </section>
 
-<section class="section" id="tulisan"><div class="container">
-<div class="section-head"><div><h2 class="section-title">Diskografi Buku</h2><p class="section-sub">Kumpulan novel saya tentang sejarah, manusia, dan dunia yang kita hidupi.</p></div><a class="section-link" href="<?php echo esc_url(get_post_type_archive_link('ano_book')); ?>">Lihat Semua Buku</a></div>
-<div class="books-grid"><?php
-$books=get_posts(array('post_type'=>'ano_book','posts_per_page'=>4,'orderby'=>array('menu_order'=>'ASC','date'=>'DESC')));
-if(!$books){$books=array();}
-foreach($books as $p): $img=get_the_post_thumbnail_url($p,'medium'); ?>
-<article class="book-card"><div class="book-cover"><?php if($img): ?><img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"><?php else:
-$book_title = get_the_title($p);
-$book_file = (strpos($book_title,'Jalur Wangi')!==false) ? 'waling-jalur-wangi.svg' : ((strpos($book_title,'Altar')!==false) ? 'waling-altar.svg' : ((strpos($book_title,'ARGYRE')!==false) ? 'argyre.svg' : 'waling-jalur-angin.svg'));
-?>
-<img src="<?php echo esc_url(get_template_directory_uri().'/assets/images/'.$book_file); ?>" alt=""><?php endif; ?></div>
-<div><h3 class="book-title"><?php echo esc_html(get_the_title($p)); ?></h3><p class="book-desc"><?php echo esc_html(ano_excerpt(get_the_excerpt($p),95)); ?></p><a class="text-link" href="<?php echo esc_url(get_permalink($p)); ?>">Lihat Detail →</a></div></article>
-<?php endforeach; if(!$books): ?><p>Belum ada buku. Tambahkan konten melalui Konten ANO → Diskografi Buku.</p><?php endif; ?></div>
-</div></section>
+<section class="section" id="tulisan">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <h2 class="section-title">Diskografi Buku</h2>
+                <p class="section-sub">Kumpulan novel saya tentang sejarah, manusia, dan dunia yang kita hidupi.</p>
+            </div><a class="section-link" href="<?php echo esc_url(get_post_type_archive_link('ano_book')); ?>">Lihat Semua Buku</a>
+        </div>
+        <div class="books-grid"><?php
+                                $books = get_posts(array('post_type' => 'ano_book', 'posts_per_page' => 4, 'orderby' => array('menu_order' => 'ASC', 'date' => 'DESC')));
+                                if (!$books) {
+                                    $books = array();
+                                }
+                                foreach ($books as $p): $img = get_the_post_thumbnail_url($p, 'medium'); ?>
+                <article class="book-card">
+                    <div class="book-cover"><?php if ($img): ?><img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"><?php else:
+                                                                                                                                                        $book_title = get_the_title($p);
+                                                                                                                                                        $book_file = (strpos($book_title, 'Jalur Wangi') !== false) ? 'waling-jalur-wangi.svg' : ((strpos($book_title, 'Altar') !== false) ? 'waling-altar.svg' : ((strpos($book_title, 'ARGYRE') !== false) ? 'argyre.svg' : 'waling-jalur-angin.svg'));
+                                                                                                                                                        ?>
+                            <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/' . $book_file); ?>" alt=""><?php endif; ?>
+                    </div>
+                    <div>
+                        <h3 class="book-title"><?php echo esc_html(get_the_title($p)); ?></h3>
+                        <p class="book-desc"><?php echo esc_html(ano_excerpt(get_the_excerpt($p), 95)); ?></p><a class="text-link" href="<?php echo esc_url(get_permalink($p)); ?>">Lihat Detail →</a>
+                    </div>
+                </article>
+            <?php endforeach;
+                                if (!$books): ?><p>Belum ada buku. Tambahkan konten melalui Konten ANO → Diskografi Buku.</p><?php endif; ?>
+        </div>
+    </div>
+</section>
 
-<section class="section" id="usaha"><div class="container">
-<div class="section-head"><div><h2 class="section-title">Usaha</h2><p class="section-sub">Lini usaha dan layanan yang saya jalankan.</p></div><a class="section-link" href="<?php echo esc_url(get_post_type_archive_link('ano_business')); ?>">Lihat Semua Usaha</a></div>
-<div class="business-grid"><?php $items=get_posts(array('post_type'=>'ano_business','posts_per_page'=>6,'orderby'=>array('menu_order'=>'ASC','date'=>'ASC'))); foreach($items as $i=>$p): ?>
-<article class="business-card">
-<?php $img=get_the_post_thumbnail_url($p,'medium'); if($img): ?><img class="business-logo" src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"><?php else: ?><div class="business-logo" aria-hidden="true"></div><?php endif; ?>
-<div class="business-name"><?php echo esc_html(get_the_title($p)); ?></div><p class="business-desc"><?php echo esc_html(ano_excerpt(get_the_excerpt($p),90)); ?></p><a class="text-link" href="<?php echo esc_url(get_post_meta($p->ID,'ano_business_url',true) ?: get_permalink($p)); ?>" target="_blank" rel="noopener noreferrer">Kunjungi Website →</a>
-</article><?php endforeach; ?></div>
-</div></section>
+<section class="section" id="usaha">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <h2 class="section-title">Usaha</h2>
+                <p class="section-sub">Lini usaha dan layanan yang saya jalankan.</p>
+            </div><a class="section-link" href="<?php echo esc_url(get_post_type_archive_link('ano_business')); ?>">Lihat Semua Usaha</a>
+        </div>
+        <div class="business-grid"><?php $items = get_posts(array('post_type' => 'ano_business', 'posts_per_page' => 6, 'orderby' => array('menu_order' => 'ASC', 'date' => 'ASC')));
+                                    foreach ($items as $i => $p): ?>
+                <article class="business-card">
+                    <?php $img = get_the_post_thumbnail_url($p, 'medium');
+                                        if ($img): ?><img class="business-logo" src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"><?php else: ?><div class="business-logo" aria-hidden="true"></div><?php endif; ?>
+                    <div class="business-name"><?php echo esc_html(get_the_title($p)); ?></div>
+                    <p class="business-desc"><?php echo esc_html(ano_excerpt(get_the_excerpt($p), 90)); ?></p><a class="text-link" href="<?php echo esc_url(get_post_meta($p->ID, 'ano_business_url', true) ?: get_permalink($p)); ?>" target="_blank" rel="noopener noreferrer">Kunjungi Website →</a>
+                </article><?php endforeach; ?>
+        </div>
+    </div>
+</section>
 
-<section class="section" id="inisiatif"><div class="container">
-<div class="section-head"><div><h2 class="section-title">Inisiatif</h2><p class="section-sub">Pendidikan, sosial, dan gerakan kolaboratif untuk dampak yang lebih luas.</p></div><a class="section-link" href="<?php echo esc_url(get_post_type_archive_link('ano_initiative')); ?>">Lihat Semua Inisiatif</a></div>
-<div class="initiative-grid"><?php $items=get_posts(array('post_type'=>'ano_initiative','posts_per_page'=>4,'orderby'=>array('menu_order'=>'ASC','date'=>'ASC'))); foreach($items as $p): ?>
-<article class="initiative-card"><?php $img=get_the_post_thumbnail_url($p,'medium'); if($img): ?><div class="initiative-image"><img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"></div><?php else: ?><div class="initiative-image initiative-image-empty" aria-hidden="true"></div><?php endif; ?><div class="business-name"><?php echo esc_html(get_the_title($p)); ?></div><p class="initiative-desc"><?php echo esc_html(ano_excerpt(get_the_excerpt($p),85)); ?></p><a class="text-link" href="<?php echo esc_url(get_post_meta($p->ID,'ano_initiative_url',true) ?: get_permalink($p)); ?>" target="_blank" rel="noopener noreferrer">Lihat Detail →</a></article>
-<?php endforeach; ?></div>
-</div></section>
+<section class="section" id="inisiatif">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <h2 class="section-title">Inisiatif</h2>
+                <p class="section-sub">Pendidikan, sosial, dan gerakan kolaboratif untuk dampak yang lebih luas.</p>
+            </div><a class="section-link" href="<?php echo esc_url(get_post_type_archive_link('ano_initiative')); ?>">Lihat Semua Inisiatif</a>
+        </div>
+        <div class="initiative-grid"><?php $items = get_posts(array('post_type' => 'ano_initiative', 'posts_per_page' => 4, 'orderby' => array('menu_order' => 'ASC', 'date' => 'ASC')));
+                                        foreach ($items as $p): ?>
+                <article class="initiative-card"><?php $img = get_the_post_thumbnail_url($p, 'medium');
+                                                    if ($img): ?><div class="initiative-image"><img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"></div><?php else: ?><div class="initiative-image initiative-image-empty" aria-hidden="true"></div><?php endif; ?><div class="business-name"><?php echo esc_html(get_the_title($p)); ?></div>
+                    <p class="initiative-desc"><?php echo esc_html(ano_excerpt(get_the_excerpt($p), 85)); ?></p><a class="text-link" href="<?php echo esc_url(get_post_meta($p->ID, 'ano_initiative_url', true) ?: get_permalink($p)); ?>" target="_blank" rel="noopener noreferrer">Lihat Detail →</a>
+                </article>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
 <?php get_footer(); ?>
