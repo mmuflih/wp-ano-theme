@@ -1,3 +1,6 @@
+### 1.4.4 — 2026-09-30
+- Penyempurnaan tampilan responsif bagian Inisiatif pada mobile.
+
 # ANO WordPress Theme
 
 Custom WordPress theme inspired by the supplied ANO reference design.
@@ -8,7 +11,6 @@ Custom WordPress theme inspired by the supplied ANO reference design.
 2. Upload `ano-wordpress-theme-logging.zip`.
 3. Activate the theme.
 4. Settings → Permalinks → Save Changes.
-5. Appearance → Demo ANO → Buat Konten Demo.
 
 ## Logging / Troubleshooting
 
@@ -26,7 +28,6 @@ Halaman tersebut menampilkan maksimal 200 baris log terakhir dan menyediakan tom
 
 - Aktivasi/deaktivasi theme.
 - Fatal PHP error yang terjadi setelah `functions.php` berhasil dimuat.
-- Exception dari proses Demo ANO.
 - Error database WordPress yang tersedia melalui `$wpdb->last_error`.
 - Pesan diagnostik dari proses internal theme.
 
@@ -55,3 +56,29 @@ Homepage menampilkan maksimal 3 artikel terbaru (`post`) secara otomatis, diurut
 ## Hero image
 
 `assets/images/hero.jpg` has been replaced with the supplied Flores landscape image. The image contains no embedded header or hero text; all slider text is rendered dynamically by WordPress from the 3 latest posts.
+
+
+## Versioning
+
+- 1.4.5 — 2026-09-30: Mobile header: burger menu ditempatkan di sebelah kiri judul ANO.
+
+- **1.4.3** — 2026-09-30: tautan **Lihat Detail** pada bagian Inisiatif dibuka di tab baru dengan `target="_blank"` dan `rel="noopener noreferrer"`.
+
+- **1.4.2** — 2026-09-30: tautan **Kunjungi Website** pada bagian Usaha dibuka di tab baru dengan `target="_blank"` dan `rel="noopener noreferrer"`.
+
+- **1.4.1** — 2026-09-30: memperbaiki tampilan logo Inisiatif agar mempertahankan rasio asli menggunakan area 1:1 dan `object-fit: contain`, sehingga logo tidak gepeng/terdistorsi.
+
+### 1.4.0 — 2026-09-30
+- Version theme diseragamkan ke `1.4.0`.
+- `ANO_VERSION` digunakan sebagai versi asset CSS dan JavaScript untuk cache busting.
+- Changelog mulai dicatat di README untuk memudahkan tracking perubahan theme.
+
+### 1.3.0
+- Inisiatif menggunakan Featured Image dalam format square dengan `object-fit: cover`.
+- Menu Generate Demo dihapus.
+- Author theme: Muflih Kholidin.
+
+### 1.2.0
+- Hero slider 3 artikel terbaru.
+- Content Manager untuk Buku, Usaha, dan Inisiatif.
+- Logging ANO.
