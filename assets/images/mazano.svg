@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="320" viewBox="0 0 500 320">
+<rect width="500" height="320" fill="#fff"/>
+<circle cx="250" cy="90" r="58" fill="none" stroke="#0f6d55" stroke-width="22"/>
+<path d="M210 95 L250 50 L290 95 L250 135 Z" fill="#0f6d55" opacity=".9"/>
+<text x="250" y="195" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#151515">MAZANO</text>
+<text x="250" y="224" text-anchor="middle" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#151515">DAYA REKAYASA</text>
+
+</svg>

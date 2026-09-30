@@ -1,0 +1,1 @@
+<?php get_header(); ?><main class="single-wrap"><h1 class="single-title">Halaman tidak ditemukan.</h1><p class="single-content">Kembali ke beranda untuk melanjutkan.</p><a class="btn" href="<?php echo esc_url(home_url('/')); ?>">Kembali ke Beranda</a></main><?php get_footer(); ?>
