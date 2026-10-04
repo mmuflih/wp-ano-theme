@@ -1,4 +1,29 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const searchToggle = document.querySelector('.search-link');
+    const searchPanel = document.querySelector('.search-panel');
+    const searchInput = document.getElementById('ano-search-input');
+    const searchClose = document.querySelector('.search-close');
+
+    function setSearch(open) {
+        if (!searchToggle || !searchPanel) return;
+        searchPanel.classList.toggle('is-open', open);
+        searchPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
+        searchToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open && searchInput) {
+            window.setTimeout(function () { searchInput.focus(); }, 30);
+        }
+    }
+
+    if (searchToggle && searchPanel) {
+        searchToggle.addEventListener('click', function () {
+            setSearch(!searchPanel.classList.contains('is-open'));
+        });
+        if (searchClose) searchClose.addEventListener('click', function () { setSearch(false); });
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && searchPanel.classList.contains('is-open')) setSearch(false);
+        });
+    }
+
     const toggle = document.querySelector('.mobile-toggle');
     const nav = document.querySelector('.main-nav');
     if (toggle && nav) {

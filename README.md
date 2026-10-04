@@ -1,3 +1,12 @@
+### 1.4.19 — 2026-10-04
+- Mengaktifkan pencarian website dari ikon search; pencarian mencakup Artikel, Buku, Usaha, dan Inisiatif.
+
+### 1.4.17 — 2026-09-30
+- Menu admin Buku, Usaha, dan Inisiatif disembunyikan dari sidebar dashboard; kelola lewat Konten ANO.
+
+### 1.4.16 — 2026-09-30
+- Detail artikel: gambar unggulan (`.single-image` / `.wp-post-image`) disembunyikan. Detail Buku, Usaha, dan Inisiatif tidak berubah.
+
 ### 1.4.15 — 2026-09-30
 - Border card di halaman "Lihat Semua" (Artikel, Buku, Usaha, Inisiatif) dihilangkan.
 

@@ -1,7 +1,7 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-define('ANO_VERSION', '1.4.15');
+define('ANO_VERSION', '1.4.20');
 
 /**
  * ANO Theme diagnostics / logging.
@@ -164,17 +164,17 @@ add_action('wp_enqueue_scripts','ano_assets');
 function ano_register_cpts() {
     register_post_type('ano_book', array(
         'labels'=>array('name'=>'Buku','singular_name'=>'Buku','add_new_item'=>'Tambah Buku'),
-        'public'=>true,'menu_icon'=>'dashicons-book-alt','supports'=>array('title','editor','excerpt','thumbnail','page-attributes'),'show_in_rest'=>true,
+        'public'=>true,'show_in_menu'=>false,'menu_icon'=>'dashicons-book-alt','supports'=>array('title','editor','excerpt','thumbnail','page-attributes'),'show_in_rest'=>true,
         'has_archive'=>true,'rewrite'=>array('slug'=>'buku')
     ));
     register_post_type('ano_business', array(
         'labels'=>array('name'=>'Usaha','singular_name'=>'Usaha','add_new_item'=>'Tambah Usaha'),
-        'public'=>true,'menu_icon'=>'dashicons-store','supports'=>array('title','editor','excerpt','thumbnail','page-attributes'),'show_in_rest'=>true,
+        'public'=>true,'show_in_menu'=>false,'menu_icon'=>'dashicons-store','supports'=>array('title','editor','excerpt','thumbnail','page-attributes'),'show_in_rest'=>true,
         'has_archive'=>true,'rewrite'=>array('slug'=>'usaha')
     ));
     register_post_type('ano_initiative', array(
         'labels'=>array('name'=>'Inisiatif','singular_name'=>'Inisiatif','add_new_item'=>'Tambah Inisiatif'),
-        'public'=>true,'menu_icon'=>'dashicons-groups','supports'=>array('title','editor','excerpt','thumbnail','page-attributes'),'show_in_rest'=>true,
+        'public'=>true,'show_in_menu'=>false,'menu_icon'=>'dashicons-groups','supports'=>array('title','editor','excerpt','thumbnail','page-attributes'),'show_in_rest'=>true,
         'has_archive'=>true,'rewrite'=>array('slug'=>'inisiatif')
     ));
 }
@@ -546,6 +546,11 @@ add_action('init', function () {
     }
 }, 99);
 add_action('pre_get_posts', function ($q) {
+    // Pencarian publik mencakup artikel, Buku, Usaha, dan Inisiatif.
+    if (!is_admin() && $q->is_main_query() && $q->is_search()) {
+        $q->set('post_type', array('post', 'ano_book', 'ano_business', 'ano_initiative'));
+        $q->set('post_status', 'publish');
+    }
     if (is_admin() || !$q->is_main_query() || !$q->get('ano_posts')) return;
     $q->set('post_type', 'post');
     $q->set('post_status', 'publish');
