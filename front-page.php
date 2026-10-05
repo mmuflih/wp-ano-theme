@@ -96,7 +96,7 @@ $hero_fallback = get_template_directory_uri() . '/assets/images/hero.jpg';
     <div class="container">
         <div class="section-head">
             <div>
-                <h2 class="section-title">Diskografi Buku</h2>
+                <h2 class="section-title">Bibliografi Buku</h2>
                 <p class="section-sub">Kumpulan novel saya tentang sejarah, manusia, dan dunia yang kita hidupi.</p>
             </div><a class="section-link" href="<?php echo esc_url(get_post_type_archive_link('ano_book')); ?>">Lihat Semua Buku</a>
         </div>
@@ -108,9 +108,9 @@ $hero_fallback = get_template_directory_uri() . '/assets/images/hero.jpg';
                                         foreach ($books as $p): $img = ano_thumb_url($p, 'medium_large'); ?>
                 <article class="content-card content-card-book">
                     <a class="content-card-thumb content-card-book-thumb" href="<?php echo esc_url(get_permalink($p)); ?>"><?php if ($img): ?><img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"><?php else:
-                                                                                                                                                                                                                                            $book_title = get_the_title($p);
-                                                                                                                                                                                                                                            $book_file = (strpos($book_title, 'Jalur Wangi') !== false) ? 'waling-jalur-wangi.svg' : ((strpos($book_title, 'Altar') !== false) ? 'waling-altar.svg' : ((strpos($book_title, 'ARGYRE') !== false) ? 'argyre.svg' : 'waling-jalur-angin.svg'));
-                                                                                                                                                                                                                                            ?><img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/' . $book_file); ?>" alt=""><?php endif; ?></a>
+                                                                                                                                                                                                                                        $book_title = get_the_title($p);
+                                                                                                                                                                                                                                        $book_file = (strpos($book_title, 'Jalur Wangi') !== false) ? 'waling-jalur-wangi.svg' : ((strpos($book_title, 'Altar') !== false) ? 'waling-altar.svg' : ((strpos($book_title, 'ARGYRE') !== false) ? 'argyre.svg' : 'waling-jalur-angin.svg'));
+                                                                                                                                                                                                                                        ?><img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/' . $book_file); ?>" alt=""><?php endif; ?></a>
                     <div class="content-card-body">
                         <div class="article-meta">Buku</div>
                         <h3 class="content-card-title"><a href="<?php echo esc_url(get_permalink($p)); ?>"><?php echo esc_html(get_the_title($p)); ?></a></h3>
@@ -118,7 +118,7 @@ $hero_fallback = get_template_directory_uri() . '/assets/images/hero.jpg';
                     </div>
                 </article>
             <?php endforeach;
-                                        if (!$books): ?><p>Belum ada buku. Tambahkan konten melalui Konten ANO → Diskografi Buku.</p><?php endif; ?>
+                                        if (!$books): ?><p>Belum ada buku. Tambahkan konten melalui Konten ANO → Bibliografi Buku.</p><?php endif; ?>
         </div>
     </div>
 </section>

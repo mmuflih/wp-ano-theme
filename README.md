@@ -95,7 +95,7 @@ Homepage menampilkan maksimal 3 artikel terbaru (`post`) secara otomatis, diurut
 
 ## Versioning
 
-- **1.4.8** — 2026-09-30: Menyeragamkan grid konten homepage menjadi 4 kolom (25% per item) untuk Artikel, Diskografi Buku, Usaha, dan Inisiatif; Artikel dan Usaha menampilkan maksimal 4 item di homepage.
+- **1.4.8** — 2026-09-30: Menyeragamkan grid konten homepage menjadi 4 kolom (25% per item) untuk Artikel, Bibliografi Buku, Usaha, dan Inisiatif; Artikel dan Usaha menampilkan maksimal 4 item di homepage.
 
 - 1.4.6 — 2026-09-30: Mobile header: burger menu ditempatkan di sebelah kiri judul ANO.
 

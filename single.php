@@ -10,7 +10,9 @@ if ($pt === 'ano_business') $ext_url = get_post_meta(get_the_ID(),'ano_business_
 if ($pt === 'ano_initiative') $ext_url = get_post_meta(get_the_ID(),'ano_initiative_url',true);
 ?>
 <main class="single-wrap"><div class="eyebrow"><?php echo esc_html(get_post_type_object($pt)->labels->singular_name); ?></div>
+<?php if (!in_array($pt, array('ano_business', 'ano_initiative'), true)) : ?>
 <h1 class="single-title"><?php the_title(); ?></h1>
+<?php endif; ?>
 <?php if($subtitle || $author): ?><p class="section-sub"><?php echo esc_html(trim($subtitle . ($subtitle && $author ? ' · ' : '') . $author)); ?></p><?php endif; ?>
 <?php if(!$is_ano): ?><p class="section-sub"><?php echo esc_html(get_the_date('j F Y')); ?></p><?php endif; ?>
 <?php
