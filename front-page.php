@@ -98,7 +98,8 @@ $hero_fallback = get_template_directory_uri() . '/assets/images/hero.jpg';
             <div>
                 <h2 class="section-title">Bibliografi Buku</h2>
                 <p class="section-sub">Kumpulan novel saya tentang sejarah, manusia, dan dunia yang kita hidupi.</p>
-            </div><a class="section-link" href="<?php echo esc_url(get_post_type_archive_link('ano_book')); ?>">Lihat Semua Buku</a>
+            </div>
+            <a class="section-link" href="<?php echo esc_url(get_post_type_archive_link('ano_book')); ?>">Lihat Semua Buku</a>
         </div>
         <div class="content-card-grid"><?php
                                         $books = get_posts(array('post_type' => 'ano_book', 'posts_per_page' => 4, 'orderby' => array('menu_order' => 'ASC', 'date' => 'DESC')));
