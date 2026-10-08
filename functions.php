@@ -1,7 +1,7 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-define('ANO_VERSION', '1.4.20');
+define('ANO_VERSION', '1.4.21');
 
 /**
  * ANO Theme diagnostics / logging.
