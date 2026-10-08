@@ -107,10 +107,10 @@ $hero_fallback = get_template_directory_uri() . '/assets/images/hero.jpg';
                                         }
                                         foreach ($books as $p): $img = ano_thumb_url($p, 'medium_large'); ?>
                 <article class="content-card content-card-book">
-                    <a class="content-card-thumb content-card-book-thumb" href="<?php echo esc_url(get_permalink($p)); ?>"><?php if ($img): ?><img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"><?php else:
-                                                                                                                                                                                                                                        $book_title = get_the_title($p);
-                                                                                                                                                                                                                                        $book_file = (strpos($book_title, 'Jalur Wangi') !== false) ? 'waling-jalur-wangi.svg' : ((strpos($book_title, 'Altar') !== false) ? 'waling-altar.svg' : ((strpos($book_title, 'ARGYRE') !== false) ? 'argyre.svg' : 'waling-jalur-angin.svg'));
-                                                                                                                                                                                                                                        ?><img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/' . $book_file); ?>" alt=""><?php endif; ?></a>
+                    <a class="content-card-book-thumb" href="<?php echo esc_url(get_permalink($p)); ?>"><?php if ($img): ?><img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"><?php else:
+                                                                                                                                                                                                                    $book_title = get_the_title($p);
+                                                                                                                                                                                                                    $book_file = (strpos($book_title, 'Jalur Wangi') !== false) ? 'waling-jalur-wangi.svg' : ((strpos($book_title, 'Altar') !== false) ? 'waling-altar.svg' : ((strpos($book_title, 'ARGYRE') !== false) ? 'argyre.svg' : 'waling-jalur-angin.svg'));
+                                                                                                                                                                                                                    ?><img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/' . $book_file); ?>" alt=""><?php endif; ?></a>
                     <div class="content-card-body">
                         <div class="article-meta">Buku</div>
                         <h3 class="content-card-title"><a href="<?php echo esc_url(get_permalink($p)); ?>"><?php echo esc_html(get_the_title($p)); ?></a></h3>
@@ -137,7 +137,6 @@ $hero_fallback = get_template_directory_uri() . '/assets/images/hero.jpg';
                     <a class="content-card-thumb content-card-thumb-contain" href="<?php echo esc_url(get_post_meta($p->ID, 'ano_business_url', true) ?: get_permalink($p)); ?>" target="_blank" rel="noopener noreferrer"><?php if ($img): ?><img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"><?php else: ?><span aria-hidden="true"></span><?php endif; ?></a>
                     <div class="content-card-body">
                         <div class="article-meta">Usaha</div>
-                        <h3 class="content-card-title"><?php echo esc_html(get_the_title($p)); ?></h3>
                         <p class="content-card-excerpt"><?php echo esc_html(ano_excerpt(get_the_excerpt($p), 90)); ?></p><a class="text-link" href="<?php echo esc_url(get_post_meta($p->ID, 'ano_business_url', true) ?: get_permalink($p)); ?>" target="_blank" rel="noopener noreferrer">Kunjungi Website →</a>
                     </div>
                 </article><?php endforeach; ?>
@@ -159,7 +158,6 @@ $hero_fallback = get_template_directory_uri() . '/assets/images/hero.jpg';
                     <a class="content-card-thumb content-card-thumb-contain" href="<?php echo esc_url(get_post_meta($p->ID, 'ano_initiative_url', true) ?: get_permalink($p)); ?>" target="_blank" rel="noopener noreferrer"><?php if ($img): ?><img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"><?php else: ?><span aria-hidden="true"></span><?php endif; ?></a>
                     <div class="content-card-body">
                         <div class="article-meta">Inisiatif</div>
-                        <h3 class="content-card-title"><?php echo esc_html(get_the_title($p)); ?></h3>
                         <p class="content-card-excerpt"><?php echo esc_html(ano_excerpt(get_the_excerpt($p), 85)); ?></p><a class="text-link" href="<?php echo esc_url(get_post_meta($p->ID, 'ano_initiative_url', true) ?: get_permalink($p)); ?>" target="_blank" rel="noopener noreferrer">Lihat Detail →</a>
                     </div>
                 </article>
