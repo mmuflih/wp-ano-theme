@@ -29,7 +29,7 @@ zip -r "$OUTPUT_FILE" . -x ".git/*" ".git/**/*" ".git/.*"
 
 if [ $? -eq 0 ]; then
     echo "✓ Successfully created $OUTPUT_FILE"
-    ls -lh "$OUTPUT_FILE"
+    ls -lh "$OUTPUT_FILE.zip"
 else
     echo "✗ Error creating zip file"
     exit 1

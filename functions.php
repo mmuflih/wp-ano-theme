@@ -360,7 +360,7 @@ function ano_content_dashboard_page()
     <div class="wrap">
         <h1>Konten ANO</h1>
         <p>Kelola konten yang tampil di halaman depan. Semua data tetap tersimpan sebagai post type WordPress sehingga bisa diedit kembali dari dashboard.</p>
-        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;max-width:1100px;margin-top:24px;">
+        <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;max-width:1100px;margin-top:24px;">
             <?php foreach ($types as $key => $type) :
                 $count = wp_count_posts($type['post_type']);
                 $published = isset($count->publish) ? (int) $count->publish : 0;
