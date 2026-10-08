@@ -663,12 +663,20 @@ add_action('init', function () {
     }
 }, 99);
 add_action('pre_get_posts', function ($q) {
+    if (is_admin() || !$q->is_main_query()) return;
+
+    // Archive memakai 10 konten per halaman agar tidak berhenti setelah satu baris grid.
+    // Ini juga memastikan paginator menghitung halaman berdasarkan jumlah konten yang ditampilkan.
+    if ($q->is_archive() || $q->get('ano_posts')) {
+        $q->set('posts_per_page', 8);
+    }
+
     // Pencarian publik mencakup artikel, Buku, Usaha, dan Inisiatif.
-    if (!is_admin() && $q->is_main_query() && $q->is_search()) {
+    if ($q->is_search()) {
         $q->set('post_type', array('post', 'ano_book', 'ano_business', 'ano_initiative'));
         $q->set('post_status', 'publish');
     }
-    if (is_admin() || !$q->is_main_query() || !$q->get('ano_posts')) return;
+    if (!$q->get('ano_posts')) return;
     $q->set('post_type', 'post');
     $q->set('post_status', 'publish');
     $q->set('ignore_sticky_posts', true);
