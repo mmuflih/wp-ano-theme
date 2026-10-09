@@ -21,8 +21,19 @@
 <div class="container section">
     <div class="archive-grid"><?php if (have_posts()): while (have_posts()): the_post(); ?>
                 <article class="post-card">
-                    <div class="<?php echo get_post_type() === 'ano_book' ? ' post-thumb-book' : 'post-thumb'; ?>"><?php $ano_t = ano_thumb_url(get_the_ID(), 'medium_large');
-                                                                                                                    if ($ano_t): ?><img src="<?php echo esc_url($ano_t); ?>" alt="<?php echo esc_attr(get_the_title()); ?>"><?php endif; ?></div>
+                    <div class="<?php
+                                        $ano_archive_post_type = get_post_type(get_the_ID());
+                                        if ($ano_archive_post_type === 'ano_book') {
+                                            echo 'post-thumb-book';
+                                        } elseif ($ano_archive_post_type === 'ano_business') {
+                                            echo 'post-thumb-business';
+                                        } elseif ($ano_archive_post_type === 'ano_initiative') {
+                                            echo 'post-thumb-initiative';
+                                        } else {
+                                            echo 'post-thumb';
+                                        }
+                                ?>"><?php $ano_t = ano_thumb_url(get_the_ID(), 'medium_large');
+                                        if ($ano_t): ?><img src="<?php echo esc_url($ano_t); ?>" alt="<?php echo esc_attr(get_the_title()); ?>"><?php endif; ?></div>
                     <div class="post-body">
                         <h2 class="post-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
                         <p class="post-excerpt"><?php echo esc_html(ano_excerpt(get_the_excerpt(), 150)); ?></p><a class="text-link" href="<?php the_permalink(); ?>">Lihat Detail →</a>

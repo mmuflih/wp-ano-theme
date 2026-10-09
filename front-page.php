@@ -135,7 +135,7 @@ $hero_fallback = get_template_directory_uri() . '/assets/images/hero.jpg';
         <div class="content-card-grid"><?php $items = get_posts(array('post_type' => 'ano_business', 'posts_per_page' => 4, 'orderby' => array('menu_order' => 'ASC', 'date' => 'ASC')));
                                         foreach ($items as $i => $p): $img = ano_thumb_url($p, 'medium_large'); ?>
                 <article class="content-card content-card-business">
-                    <a class="content-card-thumb content-card-thumb-contain" href="<?php echo esc_url(get_post_meta($p->ID, 'ano_business_url', true) ?: get_permalink($p)); ?>" target="_blank" rel="noopener noreferrer"><?php if ($img): ?><img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"><?php else: ?><span aria-hidden="true"></span><?php endif; ?></a>
+                    <a class="content-card-thumb-business" href="<?php echo esc_url(get_post_meta($p->ID, 'ano_business_url', true) ?: get_permalink($p)); ?>" target="_blank" rel="noopener noreferrer"><?php if ($img): ?><img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"><?php else: ?><span aria-hidden="true"></span><?php endif; ?></a>
                     <div class="content-card-body">
                         <div class="article-meta">Usaha</div>
                         <p class="content-card-excerpt"><?php echo esc_html(ano_excerpt(get_the_excerpt($p), 90)); ?></p><a class="text-link" href="<?php echo esc_url(get_post_meta($p->ID, 'ano_business_url', true) ?: get_permalink($p)); ?>" target="_blank" rel="noopener noreferrer">Kunjungi Website →</a>
@@ -156,7 +156,7 @@ $hero_fallback = get_template_directory_uri() . '/assets/images/hero.jpg';
         <div class="content-card-grid"><?php $items = get_posts(array('post_type' => 'ano_initiative', 'posts_per_page' => 4, 'orderby' => array('menu_order' => 'ASC', 'date' => 'ASC')));
                                         foreach ($items as $p): $img = ano_thumb_url($p, 'medium_large'); ?>
                 <article class="content-card content-card-initiative">
-                    <a class="content-card-thumb content-card-thumb-contain" href="<?php echo esc_url(get_post_meta($p->ID, 'ano_initiative_url', true) ?: get_permalink($p)); ?>" target="_blank" rel="noopener noreferrer"><?php if ($img): ?><img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"><?php else: ?><span aria-hidden="true"></span><?php endif; ?></a>
+                    <a class="content-card-thumb-initiative" href="<?php echo esc_url(get_post_meta($p->ID, 'ano_initiative_url', true) ?: get_permalink($p)); ?>" target="_blank" rel="noopener noreferrer"><?php if ($img): ?><img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr(get_the_title($p)); ?>"><?php else: ?><span aria-hidden="true"></span><?php endif; ?></a>
                     <div class="content-card-body">
                         <div class="article-meta">Inisiatif</div>
                         <p class="content-card-excerpt"><?php echo esc_html(ano_excerpt(get_the_excerpt($p), 85)); ?></p><a class="text-link" href="<?php echo esc_url(get_post_meta($p->ID, 'ano_initiative_url', true) ?: get_permalink($p)); ?>" target="_blank" rel="noopener noreferrer">Lihat Detail →</a>
